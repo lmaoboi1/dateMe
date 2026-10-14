@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Aura — Match & Romance</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              rose: '#FF4A6E',
+              roseLight: '#FFE4EB',
+              peach: '#FFA07A',
+              cream: '#FAFAF7',
+              surface: '#FFFFFF',
+              charcoal: '#2D3142',
+              muted: '#8D99AE'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif']
+          },
+          animation: {
+            'heart-pop': 'heartPop 0.85s cubic-bezier(0.17, 0.89, 0.32, 1.25) forwards',
+            'pulse-ring': 'pulseRing 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite'
+          },
+          keyframes: {
+            heartPop: {
+              '0%': { transform: 'scale(0) translateY(20px) rotate(-12deg)', opacity: '0' },
+              '35%': { transform: 'scale(1.4) translateY(-10px) rotate(4deg)', opacity: '1' },
+              '60%': { transform: 'scale(1.15) translateY(-28px) rotate(-2deg)', opacity: '1' },
+              '100%': { transform: 'scale(1.5) translateY(-75px) rotate(6deg)', opacity: '0' }
+            },
+            pulseRing: {
+              '0%': { transform: 'scale(0.85)', opacity: '0.8' },
+              '50%': { transform: 'scale(1.45)', opacity: '0.25' },
+              '100%': { transform: 'scale(1.9)', opacity: '0' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    
+    html, body {
+      overscroll-behavior: none;
+      touch-action: pan-y;
+      background-color: #F4F4F0;
+      transition: background 0.8s cubic-bezier(0.25, 1, 0.35, 1);
+    }
+
+    /* Ambient Romantic Mood Transformation */
+    body.romantic-mood {
+      background: radial-gradient(circle at 50% 35%, #FFE2EC 0%, #FFCAD4 45%, #FDE2D2 85%, #FFF0F5 100%) !important;
+    }
+
+    body.romantic-mood #appContainer {
+      background: linear-gradient(175deg, #FFF1F5 0%, #FFE5EE 50%, #FFDCE6 100%) !important;
+      box-shadow: 0 25px 60px -12px rgba(255, 74, 110, 0.35), 0 0 45px rgba(255, 74, 110, 0.15) !important;
+    }
+
+    body.romantic-mood .card-inner {
+      background: linear-gradient(165deg, #FFF0F5 0%, #FFE2EC 50%, #FFD6E3 100%) !important;
+      box-shadow: inset 0 0 40px rgba(255, 74, 110, 0.12);
+    }
+
+    /* Rhythmic Heartbeat Card Pulsation */
+    @keyframes romanticHeartbeat {
+      0% {
+        transform: scale(1) translate3d(0, 0, 0);
+        box-shadow: 0 12px 30px -6px rgba(45, 49, 66, 0.12), 0 0 0 0 rgba(255, 74, 110, 0.4);
+      }
+      22% {
+        transform: scale(1.038) translate3d(0, -2px, 0);
+        box-shadow: 0 20px 40px -4px rgba(255, 74, 110, 0.38), 0 0 30px 8px rgba(255, 74, 110, 0.32);
+      }
+      38% {
+        transform: scale(1.015) translate3d(0, 0, 0);
+        box-shadow: 0 14px 32px -4px rgba(255, 74, 110, 0.25), 0 0 18px 4px rgba(255, 74, 110, 0.2);
+      }
+      54% {
+        transform: scale(1.048) translate3d(0, -3px, 0);
+        box-shadow: 0 24px 48px -4px rgba(255, 74, 110, 0.45), 0 0 42px 14px rgba(255, 74, 110, 0.38);
+      }
+      76% {
+        transform: scale(1.01) translate3d(0, -1px, 0);
+      }
+      100% {
+        transform: scale(1) translate3d(0, 0, 0);
+        box-shadow: 0 12px 30px -6px rgba(45, 49, 66, 0.12), 0 0 0 0 rgba(255, 74, 110, 0);
+      }
+    }
+
+    .card-pulsing-romantic {
+      animation: romanticHeartbeat 1.35s cubic-bezier(0.25, 1, 0.5, 1) infinite !important;
+      border: 2px solid rgba(255, 74, 110, 0.55) !important;
+    }
+
+    /* Cinematic Floating Heart Emojis with Natural Sway */
+    @keyframes floatHeartCinematic {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) scale(0.4) rotate(0deg);
+      }
+      18% {
+        opacity: 1;
+        transform: translate3d(calc(var(--drift-x) * 0.3 + var(--sway)), -45px, 0) scale(1.3) rotate(var(--rot));
+      }
+      55% {
+        opacity: 0.95;
+        transform: translate3d(calc(var(--drift-x) * 0.7 - var(--sway)), -150px, 0) scale(1.4) rotate(calc(var(--rot) * -0.6));
+      }
+      80% {
+        opacity: 0.8;
+      }
+      100% {
+        opacity: 0;
+        transform: translate3d(var(--drift-x), -270px, 0) scale(0.9) rotate(var(--rot));
+      }
+    }
+
+    .floating-heart-emoji {
+      position: absolute;
+      pointer-events: none;
+      z-index: 45;
+      animation: floatHeartCinematic 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      filter: drop-shadow(0 6px 14px rgba(255, 74, 110, 0.55)) drop-shadow(0 0 20px rgba(255, 160, 122, 0.35));
+    }
+
+    /* Cinematic Radial Shockwave Halo */
+    @keyframes cinematicShockwave {
+      0% {
+        transform: translate(-50%, -50%) scale(0.2);
+        opacity: 1;
+        border-width: 4px;
+      }
+      60% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2.6);
+        opacity: 0;
+        border-width: 1px;
+      }
+    }
+
+    .shockwave-ring {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 9999px;
+      border-style: solid;
+      border-color: rgba(255, 74, 110, 0.8);
+      box-shadow: 0 0 35px rgba(255, 74, 110, 0.6), inset 0 0 25px rgba(255, 160, 122, 0.4);
+      animation: cinematicShockwave 0.8s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+      z-index: 48;
+    }
+
+    /* Cinematic Stardust Particles */
+    @keyframes stardustFly {
+      0% {
+        transform: translate(0, 0) scale(0) rotate(0deg);
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+        transform: translate(calc(var(--tx) * 0.45), calc(var(--ty) * 0.45)) scale(1.3) rotate(60deg);
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(0.3) rotate(180deg);
+        opacity: 0;
+      }
+    }
+
+    .stardust-particle {
+      position: absolute;
+      pointer-events: none;
+      z-index: 52;
+      animation: stardustFly 0.95s cubic-bezier(0.12, 0.9, 0.25, 1) forwards;
+      filter: drop-shadow(0 0 8px currentColor);
+    }
+
+    /* Countdown Ring & Pulse Shockwave */
+    @keyframes timerDigitBurst {
+      0% {
+        transform: scale(1.35) rotate(-3deg);
+        filter: drop-shadow(0 0 25px rgba(255, 74, 110, 0.9)) drop-shadow(0 0 45px rgba(255, 160, 122, 0.7));
+      }
+      40% {
+        transform: scale(0.95) rotate(1deg);
+      }
+      100% {
+        transform: scale(1) rotate(0deg);
+        filter: drop-shadow(0 4px 12px rgba(255, 74, 110, 0.3));
+      }
+    }
+
+    .timer-pop-burst {
+      animation: timerDigitBurst 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes ringPulseGlow {
+      0% {
+        transform: scale(0.7);
+        opacity: 0.9;
+      }
+      100% {
+        transform: scale(1.75);
+        opacity: 0;
+      }
+    }
+
+    .timer-tick-ring {
+      position: absolute;
+      border-radius: 9999px;
+      border: 2px solid rgba(255, 74, 110, 0.85);
+      box-shadow: 0 0 20px rgba(255, 74, 110, 0.6);
+      pointer-events: none;
+      animation: ringPulseGlow 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    @keyframes arrivalConfetti {
+      0% {
+        transform: translate3d(0, 0, 0) scale(0) rotate(0deg);
+        opacity: 1;
+      }
+      15% {
+        transform: translate3d(calc(var(--ax) * 0.3), calc(var(--ay) * 0.3), 0) scale(1.4) rotate(90deg);
+      }
+      100% {
+        transform: translate3d(var(--ax), var(--ay), 0) scale(0.5) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    .arrival-confetti-particle {
+      position: absolute;
+      pointer-events: none;
+      z-index: 60;
+      animation: arrivalConfetti 1.1s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+    }
+
+    /* Hardware accelerated spring-like card transitions */
+    .card-spring {
+      transition: transform 0.42s cubic-bezier(0.25, 1, 0.35, 1), opacity 0.3s ease;
+      will-change: transform, opacity;
+    }
+
+    .card-shadow {
+      border-radius: 28px;
+      box-shadow: 0 12px 30px -6px rgba(45, 49, 66, 0.12),
+                  0 4px 10px -2px rgba(45, 49, 66, 0.05);
+    }
+
+    .card-bg-transition {
+      transition: background 0.6s cubic-bezier(0.25, 1, 0.35, 1), border-color 0.4s ease;
+    }
+
+    .card-photo-img {
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen w-full flex items-center justify-center p-0 sm:p-4 text-brand-charcoal">
+
+  <!-- Mobile Screen Container -->
+  <div id="appContainer" class="w-full h-screen sm:h-[820px] max-w-[400px] bg-brand-cream sm:rounded-[36px] overflow-hidden relative flex flex-col justify-between p-4 sm:p-5 pt-6 sm:border sm:border-stone-200/80 shadow-2xl transition-all duration-700">
+
+    <div class="relative w-full flex-1 flex flex-col items-center justify-center my-auto">
+      
+      <!-- Card Stack Area (9:16 portrait ratio) -->
+      <div id="cardDeck" class="relative w-full max-w-[325px] aspect-[9/16] max-h-[72vh] sm:max-h-[580px]">
+        <!-- Cards inserted dynamically -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="emptyDeckState" class="hidden absolute inset-0 flex flex-col items-center justify-center text-center p-6 bg-white rounded-3xl border border-stone-200 card-shadow">
+        <svg class="w-16 h-16 text-brand-rose/60 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21a9 9 0 100-18 9 9 0 000 18zM9.75 9.75h.008v.008H9.75V9.75zm4.5 0h.008v.008h-.008V9.75zm-6 5.25a6 6 0 007.5 0" />
+        </svg>
+        <h3 class="text-lg font-bold">All caught up</h3>
+        <p class="text-xs text-brand-muted mt-1">No more illustrations in this deck.</p>
+        <button id="btnReload" class="mt-4 px-5 py-2 rounded-full bg-brand-charcoal text-white text-xs font-semibold active:scale-95 transition-transform">
+          Start Over
+        </button>
+      </div>
+
+    </div>
+
+    <div class="w-full max-w-[340px] mx-auto pb-4 z-20">
+      
+      <!-- Meet Now Button (Revealed on double tap) -->
+      <div id="meetNowContainer" class="h-14 transition-all duration-500 ease-out opacity-0 translate-y-3 pointer-events-none">
+        <button id="btnMeetNow" class="w-full h-full rounded-2xl bg-gradient-to-r from-brand-rose via-[#FF5E7E] to-brand-peach text-white font-extrabold text-sm tracking-widest shadow-xl shadow-brand-rose/35 flex items-center justify-center space-x-2.5 active:scale-[0.98] transition-transform">
+          <svg class="w-4 h-4 fill-white animate-pulse" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <span>MEET NOW</span>
+          <svg class="w-4 h-4 fill-white animate-pulse" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <div id="meetModal" class="absolute inset-0 z-50 bg-white/95 backdrop-blur-md flex flex-col items-center justify-between p-6 opacity-0 pointer-events-none transition-opacity duration-300">
+      
+      <!-- Close button -->
+      <div class="w-full flex justify-end">
+        <button id="btnCloseModal" class="w-8 h-8 rounded-full bg-stone-100 text-stone-500 hover:text-stone-900 flex items-center justify-center text-sm active:scale-90 transition-transform">
+          ✕
+        </button>
+      </div>
+
+      <!-- Center Radar & Real-Time Arrival Stage -->
+      <div class="relative flex flex-col items-center justify-center my-auto w-full">
+        
+        <!-- Ripple Rings -->
+        <div class="absolute w-56 h-56 rounded-full border border-brand-rose/30 animate-pulse-ring pointer-events-none"></div>
+        <div class="absolute w-72 h-72 rounded-full border border-brand-peach/25 animate-pulse-ring pointer-events-none" style="animation-delay: 0.8s;"></div>
+
+        <!-- Illustration Avatar in Circle -->
+        <div id="modalAvatarSlot" class="w-28 h-28 rounded-full shadow-lg border-4 border-white flex items-center justify-center relative z-10 overflow-hidden bg-brand-cream">
+          <!-- Illustration injected via JS -->
+        </div>
+
+        <h3 id="modalUserName" class="mt-4 text-xl font-bold tracking-tight">Sofia</h3>
+        <p id="modalStatusText" class="text-xs text-brand-muted mt-0.5">Locating nearest rendezvous spot...</p>
+
+        <!-- Dynamic Searching State with Progress Bar -->
+        <div id="searchProgressArea" class="mt-6 w-full max-w-[280px] flex flex-col items-center">
+          <div class="w-full bg-stone-100 rounded-full h-2 overflow-hidden relative shadow-inner">
+            <div id="searchProgressBar" class="h-full bg-gradient-to-r from-brand-rose via-pink-500 to-brand-peach rounded-full transition-all duration-300 w-0"></div>
+          </div>
+          
+          <div class="flex items-center space-x-2 mt-3 text-[11px] font-semibold text-brand-rose">
+            <span class="w-2 h-2 rounded-full bg-brand-rose animate-ping"></span>
+            <span id="searchSubtext">Pinging GPS beacon...</span>
+          </div>
+        </div>
+
+        <!-- In-Person Meeting Dispatched / Arrival Timer -->
+        <div id="connectedCard" class="hidden mt-4 w-full max-w-[310px] p-5 rounded-3xl bg-gradient-to-b from-rose-50/90 via-white to-pink-50/50 border border-rose-200/80 shadow-xl shadow-brand-rose/10 text-center relative overflow-hidden backdrop-blur-sm">
+          
+          <!-- Subtle top glow accent -->
+          <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-40 h-20 bg-brand-rose/15 blur-2xl pointer-events-none rounded-full"></div>
+
+          <!-- Status badge -->
+          <div class="inline-flex items-center space-x-1.5 px-3.5 py-1 rounded-full bg-brand-rose/10 text-brand-rose text-[11px] font-extrabold border border-brand-rose/20 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-brand-rose animate-ping"></span>
+            <span id="meetingStatusBadge">EN ROUTE</span>
+          </div>
+          
+          <!-- Big Bold Countdown Display with Particle Stage -->
+          <div class="mt-3 relative flex items-center justify-center min-h-[90px]" id="timerStage">
+            <!-- Pulsing ambient glow sphere -->
+            <div id="timerAuraGlow" class="absolute w-24 h-24 rounded-full bg-brand-rose/20 blur-xl pointer-events-none transition-transform duration-300"></div>
+            
+            <div class="flex items-baseline justify-center relative z-10">
+              <div class="text-6xl sm:text-7xl font-black bg-gradient-to-br from-[#FF2E56] via-brand-rose to-brand-peach bg-clip-text text-transparent font-mono tracking-tighter drop-shadow-md select-none" id="arrivalTimeDisplay">
+                03
+              </div>
+              <span id="arrivalUnitDisplay" class="text-base font-extrabold text-brand-rose/80 ml-1.5 tracking-wider uppercase select-none">SEC</span>
+            </div>
+          </div>
+          <div class="text-[11px] text-brand-muted font-semibold tracking-wide uppercase mt-0.5" id="arrivalSubtitle">Arriving in real-time</div>
+
+          <!-- Big Live Distance Counter -->
+          <div class="mt-4 p-3 rounded-2xl bg-white/90 border border-stone-200/70 shadow-sm flex flex-col items-center">
+            <div class="text-[10px] uppercase font-bold text-stone-400 tracking-wider flex items-center space-x-1">
+              <svg class="w-3 h-3 text-brand-rose" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+              </svg>
+              <span>Distance Closing In</span>
+            </div>
+            <div class="flex items-baseline space-x-1 mt-1">
+              <span id="bigDistanceNumber" class="text-3xl font-black text-brand-charcoal font-mono tracking-tight">1,400</span>
+              <span id="bigDistanceUnit" class="text-xs font-bold text-stone-400 uppercase tracking-widest">m</span>
+            </div>
+            <!-- Distance progress track -->
+            <div class="w-full bg-stone-100 rounded-full h-1.5 mt-2.5 overflow-hidden">
+              <div id="distanceProgressBar" class="h-full bg-gradient-to-r from-brand-peach to-brand-rose rounded-full transition-all duration-100 w-0"></div>
+            </div>
+          </div>
+
+          <!-- Live tracker pill footer -->
+          <div class="mt-3 flex items-center justify-between text-[11px] text-stone-500 font-medium px-1">
+            <span id="modalDistanceTag">Rendezvous spot locked</span>
+            <span class="font-bold text-emerald-600 flex items-center space-x-1" id="liveTrackingTag">
+              <span>Closing gap</span>
+              <span class="animate-bounce inline-block">🏃‍♀️</span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Cancel Action -->
+      <div class="w-full pb-4 flex justify-center">
+        <button id="btnCancelCall" class="px-6 py-2.5 rounded-full bg-stone-100 hover:bg-stone-200 text-brand-charcoal text-xs font-semibold active:scale-95 transition-all">
+          Cancel Meeting
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const PROFILES = [
+      {
+        id: 1,
+        name: "Sofia, 24",
+        distance: "1.4 km away",
+        etaMinutes: 8,
+        cardColor: "#FFF5F7",
+        image: "https://i.ibb.co/nMLnC0PT/image.png"
+      },
+      {
+        id: 2,
+        name: "Chloe, 25",
+        distance: "850 m away",
+        etaMinutes: 5,
+        cardColor: "#F2FAFC",
+        image: "https://i.ibb.co/qFc7XmnK/image.png"
+      },
+      {
+        id: 3,
+        name: "Elena, 24",
+        distance: "2.3 km away",
+        etaMinutes: 14,
+        cardColor: "#F7FCF5",
+        image: "https://i.ibb.co/Q7Xj1Fh0/image.png"
+      },
+      {
+        id: 4,
+        name: "Maya, 26",
+        distance: "400 m away",
+        etaMinutes: 3,
+        cardColor: "#FAF5FC",
+        image: "https://i.ibb.co/pjNMYj43/image.png"
+      },
+      {
+        id: 5,
+        name: "Zoe, 23",
+        distance: "620 m away",
+        etaMinutes: 4,
+        cardColor: "#FFF8F0",
+        image: "https://i.ibb.co/7Jf8r9YR/image.png",
+        modalAvatar: "https://i.ibb.co/gKmwSrW/image.png",
+        imagePosition: "object-[center_12%]"
+      }
+    ];
+
+    // State Variables
+    let deck = [...PROFILES];
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let activeCardEl = null;
+    let lastTapTime = 0;
+    let searchTimeout = null;
+    let heartStreamInterval = null;
+    let arrivalInterval = null;
+    let arrivalTotalSecs = 3;
+    let distanceAnimFrame = null;
+    let initialDistanceMeters = 1400;
+
+    // DOM References
+    const cardDeck = document.getElementById('cardDeck');
+    const emptyDeckState = document.getElementById('emptyDeckState');
+    const meetNowContainer = document.getElementById('meetNowContainer');
+    const btnMeetNow = document.getElementById('btnMeetNow');
+    const meetModal = document.getElementById('meetModal');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+    const btnCancelCall = document.getElementById('btnCancelCall');
+    const btnReload = document.getElementById('btnReload');
+    const searchProgressArea = document.getElementById('searchProgressArea');
+    const searchProgressBar = document.getElementById('searchProgressBar');
+    const searchSubtext = document.getElementById('searchSubtext');
+    const modalUserName = document.getElementById('modalUserName');
+    const modalStatusText = document.getElementById('modalStatusText');
+    const modalAvatarSlot = document.getElementById('modalAvatarSlot');
+    const connectedCard = document.getElementById('connectedCard');
+    const modalDistanceTag = document.getElementById('modalDistanceTag');
+    const meetingStatusBadge = document.getElementById('meetingStatusBadge');
+    const arrivalSubtitle = document.getElementById('arrivalSubtitle');
+    const liveTrackingTag = document.getElementById('liveTrackingTag');
+    const arrivalTimeDisplay = document.getElementById('arrivalTimeDisplay');
+    const arrivalUnitDisplay = document.getElementById('arrivalUnitDisplay');
+    const bigDistanceNumber = document.getElementById('bigDistanceNumber');
+    const bigDistanceUnit = document.getElementById('bigDistanceUnit');
+    const distanceProgressBar = document.getElementById('distanceProgressBar');
+    const timerStage = document.getElementById('timerStage');
+    const timerAuraGlow = document.getElementById('timerAuraGlow');
+
+    function buildCardHtml(profile) {
+      const positionClass = profile.imagePosition || 'object-center';
+      return `
+        <div class="card-inner relative w-full h-full rounded-[28px] overflow-hidden flex flex-col justify-between select-none card-bg-transition bg-stone-900">
+          
+          <!-- Full-Bleed Edge-to-Edge Image taking entire card -->
+          <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+            <img src="${profile.image}" alt="${profile.name}" class="card-photo-img w-full h-full object-cover ${positionClass} pointer-events-none select-none" onerror="this.onerror=null;this.src='https://placehold.co/600x1000/FFE4EB/FF4A6E?text=Photo'"/>
+          </div>
+
+          <!-- Subtle Top Gradient Scrim for Contrast -->
+          <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/40 via-black/10 to-transparent pointer-events-none z-10"></div>
+
+          <!-- Bottom Cinematic Gradient Scrim for Text Legibility -->
+          <div class="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/85 via-black/45 to-transparent pointer-events-none z-10"></div>
+
+          <!-- Spacer Top -->
+          <div class="h-4 z-20"></div>
+
+          <!-- Bottom Profile Details Overlay -->
+          <div class="relative z-20 p-4 pb-4.5 flex items-end justify-between">
+            <div class="text-white drop-shadow-md">
+              <h2 class="text-xl font-extrabold tracking-tight text-white leading-tight drop-shadow-sm">${profile.name}</h2>
+              <div class="flex items-center space-x-1.5 mt-1 text-xs font-semibold text-white/90">
+                <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-brand-rose/90 shadow-sm">
+                  <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                  </svg>
+                </span>
+                <span class="tracking-wide">${profile.distance}</span>
+              </div>
+            </div>
+            
+            <div class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-white shadow-lg">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- TikTok-style pull-down skip overlay -->
+          <div class="card-overlay-skip pointer-events-none absolute inset-0 rounded-[28px] bg-gradient-to-b from-stone-950/60 via-transparent to-transparent opacity-0 transition-opacity duration-75 z-20"></div>
+
+          <div class="skip-pill absolute top-5 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-stone-900/80 backdrop-blur-md text-white font-bold text-xs tracking-wide uppercase shadow-lg opacity-0 pointer-events-none transition-all flex items-center space-x-1.5 z-30 border border-white/10">
+            <svg class="w-3.5 h-3.5 fill-none stroke-white stroke-2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+            </svg>
+            <span>Skip</span>
+          </div>
+
+        </div>
+      `;
+    }
+
+    function renderDeck() {
+      cardDeck.innerHTML = '';
+      hideMeetNow();
+      stopHeartStream();
+      document.body.classList.remove('romantic-mood');
+
+      if (deck.length === 0) {
+        emptyDeckState.classList.remove('hidden');
+        return;
+      }
+
+      emptyDeckState.classList.add('hidden');
+
+      const cardsToRender = deck.slice(0, 2).reverse();
+
+      cardsToRender.forEach((profile, index) => {
+        const isTop = (index === cardsToRender.length - 1);
+        const stackOffset = cardsToRender.length - 1 - index;
+
+        const card = document.createElement('div');
+        card.className = `absolute inset-0 w-full h-full rounded-[28px] overflow-hidden card-shadow card-spring ${isTop ? 'cursor-grab touch-none z-20' : 'z-10 pointer-events-none'}`;
+        card.dataset.id = profile.id;
+
+        const scale = 1 - stackOffset * 0.05;
+        const translateY = stackOffset * 12;
+        card.style.transform = `translate3d(0px, ${translateY}px, 0px) scale(${scale})`;
+        card.style.opacity = `${1 - stackOffset * 0.2}`;
+
+        card.innerHTML = buildCardHtml(profile);
+
+        if (isTop) {
+          activeCardEl = card;
+          attachCardEvents(card);
+        }
+
+        cardDeck.appendChild(card);
+      });
+    }
+
+    function attachCardEvents(card) {
+      card.addEventListener('pointerdown', handlePointerDown);
+    }
+
+    function handlePointerDown(e) {
+      if (e.target.closest('button')) return;
+
+      const now = Date.now();
+      const diff = now - lastTapTime;
+
+      // Double-tap trigger to like
+      if (diff > 0 && diff < 300) {
+        triggerDoubleTap(e);
+        lastTapTime = 0;
+        return;
+      }
+      lastTapTime = now;
+
+      // Start vertical drag (TikTok style)
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      currentX = 0;
+      currentY = 0;
+
+      activeCardEl.classList.remove('card-spring');
+      window.addEventListener('pointermove', handlePointerMove);
+      window.addEventListener('pointerup', handlePointerUp);
+      window.addEventListener('pointercancel', handlePointerUp);
+    }
+
+    function handlePointerMove(e) {
+      if (!isDragging || !activeCardEl) return;
+
+      currentX = e.clientX - startX;
+      currentY = e.clientY - startY;
+
+      // Dampen horizontal drag completely to lock onto vertical TikTok swipe
+      const dampX = currentX * 0.12;
+
+      // If user drags upward, add elastic rubber-banding resistance
+      let visualY = currentY;
+      if (currentY < 0) {
+        visualY = currentY * 0.28;
+      }
+
+      // Tilt slightly during swipe down
+      const rotation = dampX * 0.15;
+      const scale = Math.max(0.92, 1 - (Math.max(0, currentY) / 1200));
+
+      activeCardEl.style.transform = `translate3d(${dampX}px, ${visualY}px, 0px) scale(${scale}) rotate(${rotation}deg)`;
+
+      // Dynamic visual feedback for skip
+      const skipPill = activeCardEl.querySelector('.skip-pill');
+      const skipOverlay = activeCardEl.querySelector('.card-overlay-skip');
+
+      if (currentY > 0) {
+        const factor = Math.min(1, currentY / 100);
+        if (skipPill) {
+          skipPill.style.opacity = factor;
+          skipPill.style.transform = `translate(-50%, ${Math.min(14, factor * 14)}px) scale(${0.85 + factor * 0.15})`;
+        }
+        if (skipOverlay) {
+          skipOverlay.style.opacity = factor * 0.8;
+        }
+
+        // Slightly bring underlying card closer as top card is pulled down
+        const nextCard = activeCardEl.previousElementSibling;
+        if (nextCard) {
+          const underScale = 0.95 + factor * 0.05;
+          const underY = 12 - factor * 12;
+          nextCard.style.transform = `translate3d(0px, ${underY}px, 0px) scale(${underScale})`;
+          nextCard.style.opacity = `${0.8 + factor * 0.2}`;
+        }
+      } else {
+        if (skipPill) skipPill.style.opacity = '0';
+        if (skipOverlay) skipOverlay.style.opacity = '0';
+      }
+    }
+
+    function handlePointerUp() {
+      if (!isDragging) return;
+      isDragging = false;
+
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
+      window.removeEventListener('pointercancel', handlePointerUp);
+
+      if (!activeCardEl) return;
+      activeCardEl.classList.add('card-spring');
+
+      const skipThreshold = 85;
+
+      // Swipe down to skip (TikTok FYP style)
+      if (currentY > skipThreshold) {
+        finishSwipeDown();
+      } else {
+        // Snap back to normal
+        activeCardEl.style.transform = 'translate3d(0px, 0px, 0px) scale(1) rotate(0deg)';
+        const skipPill = activeCardEl.querySelector('.skip-pill');
+        const skipOverlay = activeCardEl.querySelector('.card-overlay-skip');
+        if (skipPill) skipPill.style.opacity = '0';
+        if (skipOverlay) skipOverlay.style.opacity = '0';
+
+        const nextCard = activeCardEl.previousElementSibling;
+        if (nextCard) {
+          nextCard.style.transform = 'translate3d(0px, 12px, 0px) scale(0.95)';
+          nextCard.style.opacity = '0.8';
+        }
+      }
+    }
+
+    function finishSwipeDown() {
+      if (!activeCardEl || deck.length === 0) return;
+
+      // Animate card smoothly sliding down out of the viewport
+      activeCardEl.style.transform = `translate3d(0px, 680px, 0px) scale(0.92) rotate(2deg)`;
+      activeCardEl.style.opacity = '0';
+
+      const nextCard = activeCardEl.previousElementSibling;
+      if (nextCard) {
+        nextCard.classList.add('card-spring');
+        nextCard.style.transform = 'translate3d(0px, 0px, 0px) scale(1)';
+        nextCard.style.opacity = '1';
+      }
+
+      stopHeartStream();
+      document.body.classList.remove('romantic-mood');
+
+      setTimeout(() => {
+        deck.shift();
+        renderDeck();
+      }, 260);
+    }
+
+    function triggerDoubleTap(e) {
+      if (!activeCardEl || deck.length === 0) return;
+
+      const photoImg = activeCardEl.querySelector('.card-photo-img');
+
+      // 1. Transform background ambiance to warm romantic glow
+      document.body.classList.add('romantic-mood');
+
+      // 2. Zoom portrait photo slightly
+      if (photoImg) {
+        photoImg.style.transform = 'scale(1.08)';
+      }
+
+      // 3. Initiate rhythmic heartbeat pulsation on the human card
+      activeCardEl.classList.remove('card-pulsing-romantic');
+      void activeCardEl.offsetWidth; // Force CSS animation reflow
+      activeCardEl.classList.add('card-pulsing-romantic');
+
+      // 4. Pop ultra-cinematic heart & stardust burst at tap location
+      const rect = activeCardEl.getBoundingClientRect();
+      const x = (e && e.clientX ? e.clientX : rect.left + rect.width / 2) - rect.left;
+      const y = (e && e.clientY ? e.clientY : rect.top + rect.height * 0.42) - rect.top;
+      createCinematicHeartBurst(x, y);
+
+      // 5. Spawn immediate burst of floating heart emojis
+      for (let i = 0; i < 7; i++) {
+        setTimeout(() => spawnSingleHeartEmoji(), i * 65);
+      }
+
+      // 6. Continuous stream of rising heart emojis
+      startHeartStream();
+
+      // 7. Reveal centered MEET NOW rendezvous action
+      showMeetNow();
+    }
+
+    function spawnSingleHeartEmoji() {
+      if (!activeCardEl || deck.length === 0) return;
+
+      const emojis = ['❤️', '💖', '💕', '💓', '💗', '💞', '💘', '✨', '🥰'];
+      const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+      const emojiEl = document.createElement('div');
+      const sizes = ['text-xl', 'text-2xl', 'text-3xl', 'text-4xl'];
+      const randomSize = sizes[Math.floor(Math.random() * sizes.length)];
+      emojiEl.className = `floating-heart-emoji ${randomSize}`;
+      emojiEl.textContent = randomEmoji;
+
+      const cardW = activeCardEl.offsetWidth || 300;
+      const cardH = activeCardEl.offsetHeight || 500;
+
+      const startX = (cardW * 0.2) + Math.random() * (cardW * 0.6);
+      const startY = (cardH * 0.45) + (Math.random() * 80 - 20);
+      const driftX = (Math.random() - 0.5) * 130;
+      const sway = (Math.random() - 0.5) * 40;
+      const rot = (Math.random() - 0.5) * 45;
+
+      emojiEl.style.left = `${startX}px`;
+      emojiEl.style.top = `${startY}px`;
+      emojiEl.style.setProperty('--drift-x', `${driftX}px`);
+      emojiEl.style.setProperty('--sway', `${sway}px`);
+      emojiEl.style.setProperty('--rot', `${rot}deg`);
+
+      activeCardEl.appendChild(emojiEl);
+      setTimeout(() => emojiEl.remove(), 2400);
+    }
+
+    function startHeartStream() {
+      if (heartStreamInterval) clearInterval(heartStreamInterval);
+
+      heartStreamInterval = setInterval(() => {
+        if (!activeCardEl || deck.length === 0) {
+          stopHeartStream();
+          return;
+        }
+        spawnSingleHeartEmoji();
+      }, 260);
+    }
+
+    function stopHeartStream() {
+      if (heartStreamInterval) {
+        clearInterval(heartStreamInterval);
+        heartStreamInterval = null;
+      }
+      if (activeCardEl) {
+        activeCardEl.classList.remove('card-pulsing-romantic');
+      }
+    }
+
+    function createCinematicHeartBurst(x, y) {
+      // 1. Shockwave rings expanding outward
+      const shockwave = document.createElement('div');
+      shockwave.className = 'shockwave-ring';
+      shockwave.style.left = `${x}px`;
+      shockwave.style.top = `${y}px`;
+      shockwave.style.width = '70px';
+      shockwave.style.height = '70px';
+      activeCardEl.appendChild(shockwave);
+      setTimeout(() => shockwave.remove(), 800);
+
+      // 2. Central 3D pop heart
+      const mainHeart = document.createElement('div');
+      mainHeart.className = 'absolute pointer-events-none z-50 animate-heart-pop';
+      mainHeart.style.left = `${x - 52}px`;
+      mainHeart.style.top = `${y - 52}px`;
+      mainHeart.innerHTML = `
+        <svg class="w-28 h-28 filter drop-shadow-[0_12px_32px_rgba(255,74,110,0.85)] drop-shadow-[0_0_20px_rgba(255,160,122,0.6)]" viewBox="0 0 24 24">
+          <defs>
+            <linearGradient id="popHeartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FF3366"/>
+              <stop offset="50%" stop-color="#FF5E7E"/>
+              <stop offset="100%" stop-color="#FFA07A"/>
+            </linearGradient>
+          </defs>
+          <path fill="url(#popHeartGrad)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      `;
+      activeCardEl.appendChild(mainHeart);
+      setTimeout(() => mainHeart.remove(), 850);
+
+      // 3. Stardust sparkles & micro-hearts burst in a 360-degree radial blast
+      const particleCount = 14;
+      for (let i = 0; i < particleCount; i++) {
+        const angle = (i / particleCount) * (Math.PI * 2) + (Math.random() * 0.4 - 0.2);
+        const distance = 45 + Math.random() * 65;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        const isHeart = Math.random() > 0.4;
+        const size = isHeart ? (12 + Math.random() * 8) : (8 + Math.random() * 10);
+        const colors = ['#FF4A6E', '#FFA07A', '#FFD166', '#FF85A2', '#FFFFFF'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+
+        const star = document.createElement('div');
+        star.className = 'stardust-particle';
+        star.style.left = `${x}px`;
+        star.style.top = `${y}px`;
+        star.style.color = color;
+        star.style.setProperty('--tx', `${tx}px`);
+        star.style.setProperty('--ty', `${ty}px`);
+
+        if (isHeart) {
+          star.innerHTML = `
+            <svg style="width:${size}px; height:${size}px; fill:${color};" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          `;
+        } else {
+          // Four-pointed twinkle star
+          star.innerHTML = `
+            <svg style="width:${size}px; height:${size}px; fill:${color};" viewBox="0 0 24 24">
+              <path d="M12 0L14.8 9.2L24 12L14.8 14.8L12 24L9.2 14.8L0 12L9.2 9.2L12 0Z"/>
+            </svg>
+          `;
+        }
+
+        activeCardEl.appendChild(star);
+        setTimeout(() => star.remove(), 950);
+      }
+    }
+
+    function showMeetNow() {
+      meetNowContainer.classList.remove('opacity-0', 'translate-y-3', 'pointer-events-none');
+      meetNowContainer.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+    }
+
+    function hideMeetNow() {
+      meetNowContainer.classList.add('opacity-0', 'translate-y-3', 'pointer-events-none');
+      meetNowContainer.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+    }
+
+    function formatTime(totalSecs) {
+      const mins = Math.floor(totalSecs / 60);
+      const secs = totalSecs % 60;
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function openMeetModal() {
+      if (deck.length === 0) return;
+      const current = deck[0];
+
+      modalUserName.textContent = current.name.split(',')[0];
+      modalStatusText.textContent = `Locating ${current.name.split(',')[0]}...`;
+      const avatarSrc = current.modalAvatar || current.image;
+      modalAvatarSlot.innerHTML = `<img src="${avatarSrc}" alt="${current.name}" class="w-full h-full object-cover pointer-events-none select-none" onerror="this.onerror=null;this.src='https://placehold.co/200x200/FFE4EB/FF4A6E?text=Photo'"/>`;
+      modalDistanceTag.innerHTML = `
+        <svg class="w-3 h-3 text-brand-rose inline mr-0.5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+        </svg>
+        <span>${current.distance}</span>
+      `;
+
+      searchProgressArea.classList.remove('hidden');
+      connectedCard.classList.add('hidden');
+      searchProgressBar.style.width = '0%';
+      searchSubtext.textContent = 'Pinging GPS beacon...';
+
+      clearInterval(arrivalInterval);
+      clearTimeout(searchTimeout);
+      if (distanceAnimFrame) cancelAnimationFrame(distanceAnimFrame);
+
+      meetModal.classList.remove('opacity-0', 'pointer-events-none');
+      meetModal.classList.add('opacity-100', 'pointer-events-auto');
+
+      setTimeout(() => {
+        searchProgressBar.style.width = '45%';
+        searchSubtext.textContent = 'Pinging GPS beacon...';
+      }, 100);
+
+      setTimeout(() => {
+        searchProgressBar.style.width = '80%';
+        searchSubtext.textContent = 'Locking rendezvous coordinates...';
+      }, 800);
+
+      setTimeout(() => {
+        searchProgressBar.style.width = '100%';
+        searchSubtext.textContent = `Found ${current.name.split(',')[0]}! En route.`;
+        
+        setTimeout(() => {
+          onMeetingLocated(current);
+        }, 350);
+      }, 1600);
+    }
+
+    function parseDistanceToMeters(distStr) {
+      if (!distStr) return 1400;
+      if (distStr.includes('km')) {
+        const km = parseFloat(distStr.replace(/[^0-9.]/g, '')) || 1.4;
+        return Math.round(km * 1000);
+      }
+      return parseInt(distStr.replace(/[^0-9]/g, ''), 10) || 850;
+    }
+
+    function onMeetingLocated(currentProfile) {
+      const name = currentProfile.name.split(',')[0];
+      if (modalStatusText) modalStatusText.textContent = `Rendezvous Confirmed • ${name} is en route!`;
+      if (searchProgressArea) searchProgressArea.classList.add('hidden');
+      if (connectedCard) connectedCard.classList.remove('hidden');
+
+      // Total duration for countdown
+      const countdownTotalSecs = 3;
+      arrivalTotalSecs = countdownTotalSecs;
+      initialDistanceMeters = parseDistanceToMeters(currentProfile.distance);
+
+      // Reset styling
+      if (arrivalUnitDisplay) arrivalUnitDisplay.classList.remove('hidden');
+      if (arrivalTimeDisplay) {
+        arrivalTimeDisplay.textContent = String(arrivalTotalSecs).padStart(2, '0');
+        arrivalTimeDisplay.className = 'text-6xl sm:text-7xl font-black bg-gradient-to-br from-[#FF2E56] via-brand-rose to-brand-peach bg-clip-text text-transparent font-mono tracking-tighter drop-shadow-md select-none';
+      }
+      if (arrivalSubtitle) arrivalSubtitle.textContent = `Arriving in ${arrivalTotalSecs} seconds...`;
+      if (meetingStatusBadge) {
+        meetingStatusBadge.textContent = 'EN ROUTE';
+        meetingStatusBadge.parentElement.className = 'inline-flex items-center space-x-1.5 px-3.5 py-1 rounded-full bg-brand-rose/10 text-brand-rose text-[11px] font-extrabold border border-brand-rose/20 shadow-sm';
+      }
+      if (liveTrackingTag) liveTrackingTag.innerHTML = `<span>Closing gap</span> <span class="animate-bounce">🏃‍♀️</span>`;
+
+      // Trigger initial tick effect for "03"
+      popTimerTickEffect();
+
+      // Smooth distance countdown using requestAnimationFrame
+      const durationMs = countdownTotalSecs * 1000;
+      const startTime = performance.now();
+
+      function updateSmoothDistance(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(1, elapsed / durationMs);
+
+        // Smooth cubic ease-out curve for natural deceleration as person reaches the spot
+        const ease = 1 - Math.pow(1 - progress, 2.5);
+        const currentMeters = Math.max(0, Math.round(initialDistanceMeters * (1 - ease)));
+
+        if (bigDistanceNumber) {
+          bigDistanceNumber.textContent = currentMeters.toLocaleString();
+        }
+        if (distanceProgressBar) {
+          distanceProgressBar.style.width = `${Math.min(100, ease * 100)}%`;
+        }
+
+        if (progress < 1) {
+          distanceAnimFrame = requestAnimationFrame(updateSmoothDistance);
+        } else {
+          if (bigDistanceNumber) bigDistanceNumber.textContent = '0';
+          if (distanceProgressBar) distanceProgressBar.style.width = '100%';
+        }
+      }
+
+      if (distanceAnimFrame) cancelAnimationFrame(distanceAnimFrame);
+      distanceAnimFrame = requestAnimationFrame(updateSmoothDistance);
+
+      // Big seconds countdown ticker with particle bursts
+      arrivalInterval = setInterval(() => {
+        arrivalTotalSecs--;
+
+        if (arrivalTotalSecs > 0) {
+          if (arrivalTimeDisplay) {
+            arrivalTimeDisplay.textContent = String(arrivalTotalSecs).padStart(2, '0');
+            popTimerTickEffect();
+          }
+          if (arrivalSubtitle) arrivalSubtitle.textContent = `Approaching rendezvous • ${arrivalTotalSecs}s...`;
+        } else {
+          clearInterval(arrivalInterval);
+          if (distanceAnimFrame) cancelAnimationFrame(distanceAnimFrame);
+          
+          if (bigDistanceNumber) bigDistanceNumber.textContent = '0';
+          if (bigDistanceUnit) bigDistanceUnit.textContent = 'm (HERE)';
+          if (distanceProgressBar) distanceProgressBar.style.width = '100%';
+
+          if (arrivalUnitDisplay) arrivalUnitDisplay.classList.add('hidden');
+          if (arrivalTimeDisplay) {
+            arrivalTimeDisplay.textContent = 'ARRIVED! 🎉';
+            arrivalTimeDisplay.className = 'text-4xl sm:text-5xl font-black text-emerald-600 tracking-tight animate-bounce select-none';
+          }
+          if (modalStatusText) modalStatusText.textContent = `🎉 ${name} has arrived at the spot!`;
+          if (arrivalSubtitle) arrivalSubtitle.textContent = '';
+          if (meetingStatusBadge) {
+            meetingStatusBadge.textContent = 'HERE NOW';
+            meetingStatusBadge.parentElement.className = 'inline-flex items-center space-x-1.5 px-3.5 py-1 rounded-full bg-emerald-50 text-emerald-600 text-[11px] font-black border border-emerald-300 shadow-sm';
+          }
+          if (liveTrackingTag) liveTrackingTag.innerHTML = `<span class="text-emerald-600 font-black">Together Now!</span> <span>✨</span>`;
+
+          // Trigger grand arrival confetti burst around the timer
+          spawnArrivalConfetti();
+        }
+      }, 1000);
+    }
+
+    function popTimerTickEffect() {
+      if (!timerStage || !arrivalTimeDisplay) return;
+
+      // 1. Digit Pop CSS Animation
+      arrivalTimeDisplay.classList.remove('timer-pop-burst');
+      void arrivalTimeDisplay.offsetWidth; // Reflow
+      arrivalTimeDisplay.classList.add('timer-pop-burst');
+
+      // 2. Aura glow expansion
+      if (timerAuraGlow) {
+        timerAuraGlow.style.transform = 'scale(1.8)';
+        setTimeout(() => {
+          timerAuraGlow.style.transform = 'scale(1)';
+        }, 300);
+      }
+
+      // 3. Shockwave ring radiating from timer center
+      const ring = document.createElement('div');
+      ring.className = 'timer-tick-ring';
+      ring.style.width = '75px';
+      ring.style.height = '75px';
+      timerStage.appendChild(ring);
+      setTimeout(() => ring.remove(), 650);
+
+      // 4. Sparkle & stardust particle blast
+      const particleCount = 10;
+      for (let i = 0; i < particleCount; i++) {
+        const angle = (i / particleCount) * (Math.PI * 2) + (Math.random() * 0.4);
+        const dist = 35 + Math.random() * 45;
+        const tx = Math.cos(angle) * dist;
+        const ty = Math.sin(angle) * dist;
+        const colors = ['#FF4A6E', '#FFA07A', '#FF2E56', '#FFFFFF', '#FFD166'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const size = 6 + Math.random() * 6;
+
+        const spark = document.createElement('div');
+        spark.className = 'stardust-particle';
+        spark.style.left = '50%';
+        spark.style.top = '50%';
+        spark.style.color = color;
+        spark.style.setProperty('--tx', `${tx}px`);
+        spark.style.setProperty('--ty', `${ty}px`);
+        spark.innerHTML = `
+          <svg style="width:${size}px; height:${size}px; fill:${color};" viewBox="0 0 24 24">
+            <path d="M12 0L14.8 9.2L24 12L14.8 14.8L12 24L9.2 14.8L0 12L9.2 9.2L12 0Z"/>
+          </svg>
+        `;
+        timerStage.appendChild(spark);
+        setTimeout(() => spark.remove(), 950);
+      }
+    }
+
+    function spawnArrivalConfetti() {
+      if (!timerStage) return;
+
+      const confettiCount = 32;
+      const colors = ['#10B981', '#FF4A6E', '#FFA07A', '#F59E0B', '#3B82F6', '#8B5CF6', '#EC4899'];
+      const shapes = ['rect', 'heart', 'star'];
+
+      for (let i = 0; i < confettiCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'arrival-confetti-particle';
+        particle.style.left = '50%';
+        particle.style.top = '50%';
+
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 65 + Math.random() * 95;
+        const ax = Math.cos(angle) * velocity;
+        const ay = Math.sin(angle) * velocity - 25; // Slight upward bias
+
+        particle.style.setProperty('--ax', `${ax}px`);
+        particle.style.setProperty('--ay', `${ay}px`);
+
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        const size = 8 + Math.random() * 8;
+
+        if (shape === 'rect') {
+          particle.innerHTML = `<div style="width:${size}px; height:${size * 0.6}px; background:${color}; border-radius:2px;"></div>`;
+        } else if (shape === 'heart') {
+          particle.innerHTML = `
+            <svg style="width:${size}px; height:${size}px; fill:${color};" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          `;
+        } else {
+          particle.innerHTML = `
+            <svg style="width:${size}px; height:${size}px; fill:${color};" viewBox="0 0 24 24">
+              <path d="M12 0L14.8 9.2L24 12L14.8 14.8L12 24L9.2 14.8L0 12L9.2 9.2L12 0Z"/>
+            </svg>
+          `;
+        }
+
+        timerStage.appendChild(particle);
+        setTimeout(() => particle.remove(), 1200);
+      }
+    }
+
+    function closeModal() {
+      clearTimeout(searchTimeout);
+      clearInterval(arrivalInterval);
+      if (distanceAnimFrame) cancelAnimationFrame(distanceAnimFrame);
+      meetModal.classList.add('opacity-0', 'pointer-events-none');
+      meetModal.classList.remove('opacity-100', 'pointer-events-auto');
+    }
+
+    btnMeetNow.addEventListener('click', openMeetModal);
+    btnCloseModal.addEventListener('click', closeModal);
+    btnCancelCall.addEventListener('click', closeModal);
+
+    btnReload.addEventListener('click', () => {
+      stopHeartStream();
+      document.body.classList.remove('romantic-mood');
+      deck = [...PROFILES];
+      renderDeck();
+    });
+
+    // Keyboard support: ArrowDown to skip down like TikTok
+    window.addEventListener('keydown', (e) => {
+      if (meetModal.classList.contains('opacity-100')) {
+        if (e.key === 'Escape') closeModal();
+        return;
+      }
+      if (e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault();
+        finishSwipeDown();
+      }
+    });
+
+    // Boot the deck
+    renderDeck();
+  </script>
+</body>
+</html>
